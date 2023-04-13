@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import csv
 import os
+import re
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -67,7 +68,10 @@ with open('output.csv', 'w', newline='') as file:
                 price_elements = pricing_area.find_elements(By.CLASS_NAME, 'stat-box-value.bb.mx-2')
 
                 # Extract the text from each element
-                used_buy_box = price_elements[0].text.replace('(U)', '')
+                used_buy_box_text = price_elements[0].text
+
+                # Remove (U) or (V) label from text using regular expression
+                used_buy_box = re.sub(r'\((U|V)\)', '', used_buy_box_text).strip()
                 new_buy_box = price_elements[1].text
                 list_price = price_elements[2].text
 
